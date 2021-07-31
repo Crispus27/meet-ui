@@ -13,7 +13,7 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'events',
-      component: () => import('@/views/event/index.vue'),
+      component: () => import('@/views/event/eventHome.vue'),
       meta: {
         pageTitle: 'evenement',
         breadcrumb: [

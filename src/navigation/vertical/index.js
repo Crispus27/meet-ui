@@ -1,4 +1,4 @@
-import favorites from './favoites'
+import favorites from './favorites'
 import discovery from './discovery'
 import organizations from './organizations'
 

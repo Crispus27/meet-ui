@@ -3,14 +3,12 @@
   <div style="height: inherit">
     <div
       class="body-content-overlay"
-      :class="{'show': mqShallShowLeftSidebar}"
+      :class="{ show: mqShallShowLeftSidebar }"
       @click="mqShallShowLeftSidebar = false"
     />
     <div class="todo-app-list">
-
       <!-- App Searchbar Header -->
       <div class="app-fixed-search d-flex align-items-center">
-
         <!-- Toggler -->
         <div class="sidebar-toggle d-block d-lg-none ml-1">
           <feather-icon
@@ -56,16 +54,36 @@
             <b-dropdown-item @click="resetSortAndNavigate">
               Reset Sort
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'title-asc' } }">
+            <b-dropdown-item
+              :to="{
+                name: $route.name,
+                query: { ...$route.query, sort: 'title-asc' }
+              }"
+            >
               Sort A-Z
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'title-desc' } }">
+            <b-dropdown-item
+              :to="{
+                name: $route.name,
+                query: { ...$route.query, sort: 'title-desc' }
+              }"
+            >
               Sort Z-A
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'assignee' } }">
+            <b-dropdown-item
+              :to="{
+                name: $route.name,
+                query: { ...$route.query, sort: 'assignee' }
+              }"
+            >
               Sort Assignee
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'due-date' } }">
+            <b-dropdown-item
+              :to="{
+                name: $route.name,
+                query: { ...$route.query, sort: 'due-date' }
+              }"
+            >
               Sort Due Date
             </b-dropdown-item>
           </b-dropdown>
@@ -87,7 +105,7 @@
             v-for="task in tasks"
             :key="task.id"
             class="todo-item"
-            :class="{ 'completed': task.isCompleted }"
+            :class="{ completed: task.isCompleted }"
             @click="handleTaskClick(task)"
           >
             <feather-icon
@@ -117,7 +135,9 @@
                     {{ tag }}
                   </b-badge>
                 </div>
-                <small class="text-nowrap text-muted mr-1">{{ formatDate(task.dueDate, { month: 'short', day: 'numeric'}) }}</small>
+                <small class="text-nowrap text-muted mr-1">{{
+                  formatDate(task.dueDate, { month: "short", day: "numeric" })
+                }}</small>
                 <b-avatar
                   v-if="task.assignee"
                   size="32"
@@ -137,12 +157,11 @@
                 </b-avatar>
               </div>
             </div>
-
           </li>
         </draggable>
         <div
           class="no-results"
-          :class="{'show': !tasks.length}"
+          :class="{ show: !tasks.length }"
         >
           <h5>No Items Found</h5>
         </div>
@@ -164,7 +183,7 @@
       <todo-left-sidebar
         :task-tags="taskTags"
         :is-task-handler-sidebar-active.sync="isTaskHandlerSidebarActive"
-        :class="{'show': mqShallShowLeftSidebar}"
+        :class="{ show: mqShallShowLeftSidebar }"
         @close-left-sidebar="mqShallShowLeftSidebar = false"
       />
     </portal>
@@ -177,8 +196,14 @@ import {
   ref, watch, computed, onUnmounted,
 } from '@vue/composition-api'
 import {
-  BFormInput, BInputGroup, BInputGroupPrepend, BDropdown, BDropdownItem,
-  BFormCheckbox, BBadge, BAvatar,
+  BFormInput,
+  BInputGroup,
+  BInputGroupPrepend,
+  BDropdown,
+  BDropdownItem,
+  BFormCheckbox,
+  BBadge,
+  BAvatar,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
@@ -245,7 +270,9 @@ export default {
 
       delete currentRouteQuery.sort
 
-      router.replace({ name: route.name, query: currentRouteQuery }).catch(() => {})
+      router
+        .replace({ name: route.name, query: currentRouteQuery })
+        .catch(() => {})
     }
 
     const blankTask = {
@@ -265,25 +292,22 @@ export default {
     }
 
     const addTask = val => {
-      store.dispatch('app-todo/addTask', val)
-        .then(() => {
-          // eslint-disable-next-line no-use-before-define
-          fetchTasks()
-        })
+      store.dispatch('app-todo/addTask', val).then(() => {
+        // eslint-disable-next-line no-use-before-define
+        fetchTasks()
+      })
     }
     const removeTask = () => {
-      store.dispatch('app-todo/removeTask', { id: task.value.id })
-        .then(() => {
-          // eslint-disable-next-line no-use-before-define
-          fetchTasks()
-        })
+      store.dispatch('app-todo/removeTask', { id: task.value.id }).then(() => {
+        // eslint-disable-next-line no-use-before-define
+        fetchTasks()
+      })
     }
     const updateTask = taskData => {
-      store.dispatch('app-todo/updateTask', { task: taskData })
-        .then(() => {
-          // eslint-disable-next-line no-use-before-define
-          fetchTasks()
-        })
+      store.dispatch('app-todo/updateTask', { task: taskData }).then(() => {
+        // eslint-disable-next-line no-use-before-define
+        fetchTasks()
+      })
     }
 
     const perfectScrollbarSettings = {
@@ -293,11 +317,31 @@ export default {
     const isTaskHandlerSidebarActive = ref(false)
 
     const taskTags = [
-      { title: 'Team', color: 'primary', route: { name: 'apps-todo-tag', params: { tag: 'team' } } },
-      { title: 'Low', color: 'success', route: { name: 'apps-todo-tag', params: { tag: 'low' } } },
-      { title: 'Medium', color: 'warning', route: { name: 'apps-todo-tag', params: { tag: 'medium' } } },
-      { title: 'High', color: 'danger', route: { name: 'apps-todo-tag', params: { tag: 'high' } } },
-      { title: 'Update', color: 'info', route: { name: 'apps-todo-tag', params: { tag: 'update' } } },
+      {
+        title: 'Team',
+        color: 'primary',
+        route: { name: 'apps-todo-tag', params: { tag: 'team' } },
+      },
+      {
+        title: 'Low',
+        color: 'success',
+        route: { name: 'apps-todo-tag', params: { tag: 'low' } },
+      },
+      {
+        title: 'Medium',
+        color: 'warning',
+        route: { name: 'apps-todo-tag', params: { tag: 'medium' } },
+      },
+      {
+        title: 'High',
+        color: 'danger',
+        route: { name: 'apps-todo-tag', params: { tag: 'high' } },
+      },
+      {
+        title: 'Update',
+        color: 'info',
+        route: { name: 'apps-todo-tag', params: { tag: 'update' } },
+      },
     ]
 
     const resolveTagVariant = tag => {
@@ -335,12 +379,13 @@ export default {
     }
 
     const fetchTasks = () => {
-      store.dispatch('app-todo/fetchTasks', {
-        q: searchQuery.value,
-        filter: router.currentRoute.params.filter,
-        tag: router.currentRoute.params.tag,
-        sortBy: sortBy.value,
-      })
+      store
+        .dispatch('app-todo/fetchTasks', {
+          q: searchQuery.value,
+          filter: router.currentRoute.params.filter,
+          tag: router.currentRoute.params.tag,
+          sortBy: sortBy.value,
+        })
         .then(response => {
           tasks.value = response.data
         })
@@ -400,16 +445,16 @@ export default {
 
 <style lang="scss" scoped>
 .draggable-task-handle {
-position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    visibility: hidden;
-    cursor: move;
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: hidden;
+  cursor: move;
 
-    .todo-task-list .todo-item:hover & {
-      visibility: visible;
-    }
+  .todo-task-list .todo-item:hover & {
+    visibility: visible;
+  }
 }
 </style>
 

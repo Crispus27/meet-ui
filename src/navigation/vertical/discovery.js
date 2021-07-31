@@ -4,9 +4,9 @@ export default [
     route: 'events',
     icon: 'HomeIcon',
   },
-  {
-    title: 'Organisations',
-    route: 'organisations',
-    icon: 'FileIcon',
-  },
+  // {
+  //   title: 'Organisations',
+  //   route: 'organisations',
+  //   icon: 'FileIcon',
+  // },
 ]

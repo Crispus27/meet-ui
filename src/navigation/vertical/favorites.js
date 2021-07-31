@@ -1,6 +1,6 @@
 export default [
   {
-    header: 'Organisations',
+    header: 'Favoris',
   },
   // {
   //   title: 'Evenements',
