@@ -1,20 +1,20 @@
 export default [
   {
-    header: 'Organisations',
+    header: 'Organisationsssh',
   },
-  // {
-  //   title: 'Evenements',
-  //   route: 'ui-typography',
-  //   icon: 'TypeIcon',
-  // },
-  // {
-  //   title: 'Tickets',
-  //   route: 'ui-colors',
-  //   icon: 'DropletIcon',
-  // },
-  // {
-  //   title: 'Organisations',
-  //   route: 'ui-feather',
-  //   icon: 'EyeIcon',
-  // },
+  {
+    title: 'Evenementsss',
+    route: 'ui-typography',
+    icon: 'TypeIcon',
+  },
+  {
+    title: 'Ticketss',
+    route: 'ui-colors',
+    icon: 'DropletIcon',
+  },
+  {
+    title: 'Organisationsss',
+    route: 'ui-feather',
+    icon: 'EyeIcon',
+  },
 ]
