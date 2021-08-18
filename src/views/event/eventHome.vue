@@ -238,8 +238,8 @@ export default defineComponent({
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(TODO_APP_STORE_MODULE_NAME))
-        store.unregisterModule(TODO_APP_STORE_MODULE_NAME);
+      // if (store.hasModule(TODO_APP_STORE_MODULE_NAME))
+      //   store.unregisterModule(TODO_APP_STORE_MODULE_NAME);
     });
 
     const { route, router } = useRouter();
@@ -247,6 +247,7 @@ export default defineComponent({
     const routeQuery = computed(() => route.value.query.q);
     const routeParams = computed(() => route.value.params);
     watch(routeParams, () => {
+      console.log("------- routeParams change");
       fetchTasks();
     });
 
