@@ -88,13 +88,13 @@
         class="todo-task-list-wrapper list-group scroll-area"
       >
         <draggable
-          v-model="tasks"
+          v-model="state.tasks"
           handle=".draggable-task-handle"
           tag="ul"
           class="todo-task-list media-list"
         >
           <li
-            v-for="task in tasks"
+            v-for="task in state.tasks"
             :key="task.id"
             class="todo-item"
             :class="{ completed: task.isCompleted }"
@@ -144,7 +144,7 @@
             </div>
           </li>
         </draggable>
-        <div class="no-results" :class="{ show: !tasks.length }">
+        <div class="no-results" :class="{ show: !state.tasks.length }">
           <h5>No Items Found</h5>
         </div>
       </vue-perfect-scrollbar>
@@ -174,7 +174,15 @@
 
 <script>
 import store from "@/store";
-import { ref, watch, computed, onUnmounted } from "@vue/composition-api";
+import {
+  ref,
+  watch,
+  computed,
+  onUnmounted,
+  defineComponent,
+  reactive,
+  onMounted
+} from "@vue/composition-api";
 import {
   BFormInput,
   BInputGroup,
@@ -194,7 +202,9 @@ import TodoLeftSidebar from "./eventLeftSidebar.vue";
 import todoStoreModule from "./todoStoreModule";
 import TodoTaskHandlerSidebar from "./TodoTaskHandlerSidebar.vue";
 
-export default {
+export default defineComponent({
+  name: "EventHome",
+  props: {},
   components: {
     BFormInput,
     BInputGroup,
@@ -211,12 +221,20 @@ export default {
     TodoLeftSidebar,
     TodoTaskHandlerSidebar
   },
-  setup() {
+  setup(_, context) {
     // const TODO_APP_STORE_MODULE_NAME = "app-todo";
 
     // // Register module
     // if (!store.hasModule(TODO_APP_STORE_MODULE_NAME))
     //   store.registerModule(TODO_APP_STORE_MODULE_NAME, todoStoreModule);
+
+    // const tasks = ref([]);
+
+    const state = reactive({
+      tasks: []
+    });
+
+    onMounted(() => fetchTasks());
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -229,11 +247,8 @@ export default {
     const routeQuery = computed(() => route.value.query.q);
     const routeParams = computed(() => route.value.params);
     watch(routeParams, () => {
-      // eslint-disable-next-line no-use-before-define
       fetchTasks();
     });
-
-    const tasks = ref([]);
 
     const sortOptions = [
       "latest",
@@ -362,137 +377,132 @@ export default {
 
     const fetchTasks = () => {
       console.log("rrrrrrrrrrrr");
-      const datae = {
-        tasks: [
-          {
-            id: 1,
-            title:
-              "Entire change break our wife wide it daughter mention member.",
-            dueDate: "2020-11-25",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Jacob Ramirez",
-              avatar: require("@/assets/images/avatars/12.png")
-            },
-            tags: ["update"],
-            isCompleted: false,
-            isDeleted: false,
-            isImportant: false
+      state.tasks = [
+        {
+          id: 1,
+          title:
+            "Entire change break our wife wide it daughter mention member.",
+          dueDate: "2020-11-25",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Jacob Ramirez",
+            avatar: require("@/assets/images/avatars/12.png")
           },
-          {
-            id: 2,
-            title: "Citizen stand administration step agency century.",
-            dueDate: "2020-12-14",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Andrew Anderson",
-              avatar: ""
-            },
-            tags: ["team", "medium"],
-            isCompleted: true,
-            isDeleted: false,
-            isImportant: false
+          tags: ["update"],
+          isCompleted: false,
+          isDeleted: false,
+          isImportant: false
+        },
+        {
+          id: 2,
+          title: "Citizen stand administration step agency century.",
+          dueDate: "2020-12-14",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Andrew Anderson",
+            avatar: ""
           },
-          {
-            id: 3,
-            title: "Meet Jane and ask for coffee ❤️",
-            dueDate: "2020-11-25",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Benjamin Jacobs",
-              avatar: ""
-            },
-            tags: ["high"],
-            isCompleted: false,
-            isDeleted: false,
-            isImportant: false
+          tags: ["team", "medium"],
+          isCompleted: true,
+          isDeleted: false,
+          isImportant: false
+        },
+        {
+          id: 3,
+          title: "Meet Jane and ask for coffee ❤️",
+          dueDate: "2020-11-25",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Benjamin Jacobs",
+            avatar: ""
           },
-          {
-            id: 4,
-            title: "Answer the support tickets and close completed tickets. ",
-            dueDate: "2020-11-20",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Curtis Schmidt",
-              avatar: require("@/assets/images/avatars/9.png")
-            },
-            tags: ["medium"],
-            isCompleted: false,
-            isDeleted: false,
-            isImportant: true
+          tags: ["high"],
+          isCompleted: false,
+          isDeleted: false,
+          isImportant: false
+        },
+        {
+          id: 4,
+          title: "Answer the support tickets and close completed tickets. ",
+          dueDate: "2020-11-20",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Curtis Schmidt",
+            avatar: require("@/assets/images/avatars/9.png")
           },
-          {
-            id: 5,
-            title:
-              "Test functionality of apps developed by dev team for enhancements. ",
-            dueDate: "2020-12-06",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Katherine Perkins",
-              avatar: require("@/assets/images/avatars/9.png")
-            },
-            tags: ["medium"],
-            isCompleted: true,
-            isDeleted: false,
-            isImportant: true
+          tags: ["medium"],
+          isCompleted: false,
+          isDeleted: false,
+          isImportant: true
+        },
+        {
+          id: 5,
+          title:
+            "Test functionality of apps developed by dev team for enhancements. ",
+          dueDate: "2020-12-06",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Katherine Perkins",
+            avatar: require("@/assets/images/avatars/9.png")
           },
-          {
-            id: 6,
-            title: "Conduct a mini awareness meeting regarding health care. ",
-            dueDate: "2020-12-06",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "David Murphy",
-              avatar: ""
-            },
-            tags: ["high", "medium"],
-            isCompleted: true,
-            isDeleted: true,
-            isImportant: false
+          tags: ["medium"],
+          isCompleted: true,
+          isDeleted: false,
+          isImportant: true
+        },
+        {
+          id: 6,
+          title: "Conduct a mini awareness meeting regarding health care. ",
+          dueDate: "2020-12-06",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "David Murphy",
+            avatar: ""
           },
-          {
-            id: 7,
-            title:
-              "Plan new dashboard design with design team for Google app store. ",
-            dueDate: "2020-12-05",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Karina Miller",
-              avatar: require("@/assets/images/avatars/1.png")
-            },
-            tags: ["medium"],
-            isCompleted: false,
-            isDeleted: false,
-            isImportant: true
+          tags: ["high", "medium"],
+          isCompleted: true,
+          isDeleted: true,
+          isImportant: false
+        },
+        {
+          id: 7,
+          title:
+            "Plan new dashboard design with design team for Google app store. ",
+          dueDate: "2020-12-05",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Karina Miller",
+            avatar: require("@/assets/images/avatars/1.png")
           },
-          {
-            id: 8,
-            title: "Pick up Nats from her school and drop at dance class😁 ",
-            dueDate: "2020-12-08",
-            description:
-              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-            assignee: {
-              fullName: "Thomas Moses",
-              avatar: require("@/assets/images/avatars/7.png")
-            },
-            tags: ["low", "medium"],
-            isCompleted: false,
-            isDeleted: false,
-            isImportant: false
-          }
-        ]
-      };
-      tasks.value = datae.tasks;
+          tags: ["medium"],
+          isCompleted: false,
+          isDeleted: false,
+          isImportant: true
+        },
+        {
+          id: 8,
+          title: "Pick up Nats from her school and drop at dance class😁 ",
+          dueDate: "2020-12-08",
+          description:
+            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+          assignee: {
+            fullName: "Thomas Moses",
+            avatar: require("@/assets/images/avatars/7.png")
+          },
+          tags: ["low", "medium"],
+          isCompleted: false,
+          isDeleted: false,
+          isImportant: false
+        }
+      ];
     };
-
-    fetchTasks();
 
     const handleTaskClick = taskData => {
       task.value = taskData;
@@ -509,15 +519,14 @@ export default {
     const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility();
 
     return {
+      state,
       task,
-      tasks,
       removeTask,
       addTask,
       updateTask,
       clearTaskData,
       taskTags,
       searchQuery,
-      fetchTasks,
       perfectScrollbarSettings,
       updateRouteQuery,
       resetSortAndNavigate,
@@ -541,7 +550,7 @@ export default {
       mqShallShowLeftSidebar
     };
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

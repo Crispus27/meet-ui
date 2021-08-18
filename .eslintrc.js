@@ -1,10 +1,13 @@
 module.exports = {
-
-  "env": {
+  root: true,
+  env: {
     node: true,
   },
-  "extends": ['plugin:vue/base'],
-  "rules": {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
-  }
+  extends: ['plugin:vue/base'],
+  parserOptions: {
+    parser: 'babel-eslint',
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+  },
 }
