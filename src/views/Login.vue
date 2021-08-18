@@ -217,9 +217,9 @@ export default {
   mixins: [togglePasswordVisibility],
   data() {
     return {
-      status: '',
-      password: '',
-      userEmail: '',
+      status: 'sdvsdv',
+      password: 'okkpokj',
+      userEmail: 'hjbkjkj',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,

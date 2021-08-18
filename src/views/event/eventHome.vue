@@ -23,10 +23,7 @@
         <div class="d-flex align-content-center justify-content-between w-100">
           <b-input-group class="input-group-merge">
             <b-input-group-prepend is-text>
-              <feather-icon
-                icon="SearchIcon"
-                class="text-muted"
-              />
+              <feather-icon icon="SearchIcon" class="text-muted" />
             </b-input-group-prepend>
             <b-form-input
               :value="searchQuery"
@@ -38,12 +35,7 @@
 
         <!-- Dropdown -->
         <div class="dropdown">
-          <b-dropdown
-            variant="link"
-            no-caret
-            toggle-class="p-0 mr-1"
-            right
-          >
+          <b-dropdown variant="link" no-caret toggle-class="p-0 mr-1" right>
             <template #button-content>
               <feather-icon
                 icon="MoreVerticalIcon"
@@ -145,24 +137,14 @@
                   :variant="`light-${resolveAvatarVariant(task.tags)}`"
                   :text="avatarText(task.assignee.fullName)"
                 />
-                <b-avatar
-                  v-else
-                  size="32"
-                  variant="light-secondary"
-                >
-                  <feather-icon
-                    icon="UserIcon"
-                    size="16"
-                  />
+                <b-avatar v-else size="32" variant="light-secondary">
+                  <feather-icon icon="UserIcon" size="16" />
                 </b-avatar>
               </div>
             </div>
           </li>
         </draggable>
-        <div
-          class="no-results"
-          :class="{ show: !tasks.length }"
-        >
+        <div class="no-results" :class="{ show: !tasks.length }">
           <h5>No Items Found</h5>
         </div>
       </vue-perfect-scrollbar>
@@ -191,10 +173,8 @@
 </template>
 
 <script>
-import store from '@/store'
-import {
-  ref, watch, computed, onUnmounted,
-} from '@vue/composition-api'
+import store from "@/store";
+import { ref, watch, computed, onUnmounted } from "@vue/composition-api";
 import {
   BFormInput,
   BInputGroup,
@@ -203,16 +183,16 @@ import {
   BDropdownItem,
   BFormCheckbox,
   BBadge,
-  BAvatar,
-} from 'bootstrap-vue'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import draggable from 'vuedraggable'
-import { formatDate, avatarText } from '@core/utils/filter'
-import { useRouter } from '@core/utils/utils'
-import { useResponsiveAppLeftSidebarVisibility } from '@core/comp-functions/ui/app'
-import TodoLeftSidebar from './eventLeftSidebar.vue'
-import todoStoreModule from './todoStoreModule'
-import TodoTaskHandlerSidebar from './TodoTaskHandlerSidebar.vue'
+  BAvatar
+} from "bootstrap-vue";
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import draggable from "vuedraggable";
+import { formatDate, avatarText } from "@core/utils/filter";
+import { useRouter } from "@core/utils/utils";
+import { useResponsiveAppLeftSidebarVisibility } from "@core/comp-functions/ui/app";
+import TodoLeftSidebar from "./eventLeftSidebar.vue";
+import todoStoreModule from "./todoStoreModule";
+import TodoTaskHandlerSidebar from "./TodoTaskHandlerSidebar.vue";
 
 export default {
   components: {
@@ -229,300 +209,304 @@ export default {
 
     // App SFC
     TodoLeftSidebar,
-    TodoTaskHandlerSidebar,
+    TodoTaskHandlerSidebar
   },
   setup() {
-    const TODO_APP_STORE_MODULE_NAME = 'app-todo'
+    // const TODO_APP_STORE_MODULE_NAME = "app-todo";
 
-    // Register module
-    if (!store.hasModule(TODO_APP_STORE_MODULE_NAME)) store.registerModule(TODO_APP_STORE_MODULE_NAME, todoStoreModule)
+    // // Register module
+    // if (!store.hasModule(TODO_APP_STORE_MODULE_NAME))
+    //   store.registerModule(TODO_APP_STORE_MODULE_NAME, todoStoreModule);
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(TODO_APP_STORE_MODULE_NAME)) store.unregisterModule(TODO_APP_STORE_MODULE_NAME)
-    })
+      if (store.hasModule(TODO_APP_STORE_MODULE_NAME))
+        store.unregisterModule(TODO_APP_STORE_MODULE_NAME);
+    });
 
-    const { route, router } = useRouter()
-    const routeSortBy = computed(() => route.value.query.sort)
-    const routeQuery = computed(() => route.value.query.q)
-    const routeParams = computed(() => route.value.params)
+    const { route, router } = useRouter();
+    const routeSortBy = computed(() => route.value.query.sort);
+    const routeQuery = computed(() => route.value.query.q);
+    const routeParams = computed(() => route.value.params);
     watch(routeParams, () => {
       // eslint-disable-next-line no-use-before-define
-      fetchTasks()
-    })
+      fetchTasks();
+    });
 
-    const tasks = ref([])
+    const tasks = ref([]);
 
     const sortOptions = [
-      'latest',
-      'title-asc',
-      'title-desc',
-      'assignee',
-      'due-date',
-    ]
-    const sortBy = ref(routeSortBy.value)
+      "latest",
+      "title-asc",
+      "title-desc",
+      "assignee",
+      "due-date"
+    ];
+    const sortBy = ref(routeSortBy.value);
     watch(routeSortBy, val => {
-      if (sortOptions.includes(val)) sortBy.value = val
-      else sortBy.value = val
-    })
+      if (sortOptions.includes(val)) sortBy.value = val;
+      else sortBy.value = val;
+    });
     const resetSortAndNavigate = () => {
-      const currentRouteQuery = JSON.parse(JSON.stringify(route.value.query))
+      const currentRouteQuery = JSON.parse(JSON.stringify(route.value.query));
 
-      delete currentRouteQuery.sort
+      delete currentRouteQuery.sort;
 
       router
         .replace({ name: route.name, query: currentRouteQuery })
-        .catch(() => {})
-    }
+        .catch(() => {});
+    };
 
     const blankTask = {
       id: null,
-      title: '',
+      title: "",
       dueDate: new Date(),
-      description: '',
+      description: "",
       assignee: null,
       tags: [],
       isCompleted: false,
       isDeleted: false,
-      isImportant: false,
-    }
-    const task = ref(JSON.parse(JSON.stringify(blankTask)))
+      isImportant: false
+    };
+    const task = ref(JSON.parse(JSON.stringify(blankTask)));
     const clearTaskData = () => {
-      task.value = JSON.parse(JSON.stringify(blankTask))
-    }
+      task.value = JSON.parse(JSON.stringify(blankTask));
+    };
 
     const addTask = val => {
-      store.dispatch('app-todo/addTask', val).then(() => {
+      store.dispatch("app-todo/addTask", val).then(() => {
         // eslint-disable-next-line no-use-before-define
-        fetchTasks()
-      })
-    }
+        fetchTasks();
+      });
+    };
     const removeTask = () => {
-      store.dispatch('app-todo/removeTask', { id: task.value.id }).then(() => {
+      store.dispatch("app-todo/removeTask", { id: task.value.id }).then(() => {
         // eslint-disable-next-line no-use-before-define
-        fetchTasks()
-      })
-    }
+        fetchTasks();
+      });
+    };
     const updateTask = taskData => {
-      store.dispatch('app-todo/updateTask', { task: taskData }).then(() => {
+      store.dispatch("app-todo/updateTask", { task: taskData }).then(() => {
         // eslint-disable-next-line no-use-before-define
-        fetchTasks()
-      })
-    }
+        fetchTasks();
+      });
+    };
 
     const perfectScrollbarSettings = {
-      maxScrollbarLength: 150,
-    }
+      maxScrollbarLength: 150
+    };
 
-    const isTaskHandlerSidebarActive = ref(false)
+    const isTaskHandlerSidebarActive = ref(false);
 
     const taskTags = [
       {
-        title: 'Team',
-        color: 'primary',
-        route: { name: 'apps-todo-tag', params: { tag: 'team' } },
+        title: "Team",
+        color: "primary",
+        route: { name: "apps-todo-tag", params: { tag: "team" } }
       },
       {
-        title: 'Low',
-        color: 'success',
-        route: { name: 'apps-todo-tag', params: { tag: 'low' } },
+        title: "Low",
+        color: "success",
+        route: { name: "apps-todo-tag", params: { tag: "low" } }
       },
       {
-        title: 'Medium',
-        color: 'warning',
-        route: { name: 'apps-todo-tag', params: { tag: 'medium' } },
+        title: "Medium",
+        color: "warning",
+        route: { name: "apps-todo-tag", params: { tag: "medium" } }
       },
       {
-        title: 'High',
-        color: 'danger',
-        route: { name: 'apps-todo-tag', params: { tag: 'high' } },
+        title: "High",
+        color: "danger",
+        route: { name: "apps-todo-tag", params: { tag: "high" } }
       },
       {
-        title: 'Update',
-        color: 'info',
-        route: { name: 'apps-todo-tag', params: { tag: 'update' } },
-      },
-    ]
+        title: "Update",
+        color: "info",
+        route: { name: "apps-todo-tag", params: { tag: "update" } }
+      }
+    ];
 
     const resolveTagVariant = tag => {
-      if (tag === 'team') return 'primary'
-      if (tag === 'low') return 'success'
-      if (tag === 'medium') return 'warning'
-      if (tag === 'high') return 'danger'
-      if (tag === 'update') return 'info'
-      return 'primary'
-    }
+      if (tag === "team") return "primary";
+      if (tag === "low") return "success";
+      if (tag === "medium") return "warning";
+      if (tag === "high") return "danger";
+      if (tag === "update") return "info";
+      return "primary";
+    };
 
     const resolveAvatarVariant = tags => {
-      if (tags.includes('high')) return 'primary'
-      if (tags.includes('medium')) return 'warning'
-      if (tags.includes('low')) return 'success'
-      if (tags.includes('update')) return 'danger'
-      if (tags.includes('team')) return 'info'
-      return 'primary'
-    }
+      if (tags.includes("high")) return "primary";
+      if (tags.includes("medium")) return "warning";
+      if (tags.includes("low")) return "success";
+      if (tags.includes("update")) return "danger";
+      if (tags.includes("team")) return "info";
+      return "primary";
+    };
 
     // Search Query
-    const searchQuery = ref(routeQuery.value)
+    const searchQuery = ref(routeQuery.value);
     watch(routeQuery, val => {
-      searchQuery.value = val
-    })
+      searchQuery.value = val;
+    });
     // eslint-disable-next-line no-use-before-define
-    watch([searchQuery, sortBy], () => fetchTasks())
+    watch([searchQuery, sortBy], () => fetchTasks());
     const updateRouteQuery = val => {
-      const currentRouteQuery = JSON.parse(JSON.stringify(route.value.query))
+      const currentRouteQuery = JSON.parse(JSON.stringify(route.value.query));
 
-      if (val) currentRouteQuery.q = val
-      else delete currentRouteQuery.q
+      if (val) currentRouteQuery.q = val;
+      else delete currentRouteQuery.q;
 
-      router.replace({ name: route.name, query: currentRouteQuery })
-    }
+      router.replace({ name: route.name, query: currentRouteQuery });
+    };
 
     const fetchTasks = () => {
-          console.log('rrrrrrrrrrrr')
-          const datae = {
-  tasks: [
-    {
-      id: 1,
-      title: 'Entire change break our wife wide it daughter mention member.',
-      dueDate: '2020-11-25',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Jacob Ramirez',
-        avatar: require('@/assets/images/avatars/12.png'),
-      },
-      tags: ['update'],
-      isCompleted: false,
-      isDeleted: false,
-      isImportant: false,
-    },
-    {
-      id: 2,
-      title: 'Citizen stand administration step agency century.',
-      dueDate: '2020-12-14',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Andrew Anderson',
-        avatar: '',
-      },
-      tags: ['team', 'medium'],
-      isCompleted: true,
-      isDeleted: false,
-      isImportant: false,
-    },
-    {
-      id: 3,
-      title: 'Meet Jane and ask for coffee ❤️',
-      dueDate: '2020-11-25',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Benjamin Jacobs',
-        avatar: '',
-      },
-      tags: ['high'],
-      isCompleted: false,
-      isDeleted: false,
-      isImportant: false,
-    },
-    {
-      id: 4,
-      title: 'Answer the support tickets and close completed tickets. ',
-      dueDate: '2020-11-20',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Curtis Schmidt',
-        avatar: require('@/assets/images/avatars/9.png'),
-      },
-      tags: ['medium'],
-      isCompleted: false,
-      isDeleted: false,
-      isImportant: true,
-    },
-    {
-      id: 5,
-      title: 'Test functionality of apps developed by dev team for enhancements. ',
-      dueDate: '2020-12-06',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Katherine Perkins',
-        avatar: require('@/assets/images/avatars/9.png'),
-      },
-      tags: ['medium'],
-      isCompleted: true,
-      isDeleted: false,
-      isImportant: true,
-    },
-    {
-      id: 6,
-      title: 'Conduct a mini awareness meeting regarding health care. ',
-      dueDate: '2020-12-06',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'David Murphy',
-        avatar: '',
-      },
-      tags: ['high', 'medium'],
-      isCompleted: true,
-      isDeleted: true,
-      isImportant: false,
-    },
-    {
-      id: 7,
-      title: 'Plan new dashboard design with design team for Google app store. ',
-      dueDate: '2020-12-05',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Karina Miller',
-        avatar: require('@/assets/images/avatars/1.png'),
-      },
-      tags: ['medium'],
-      isCompleted: false,
-      isDeleted: false,
-      isImportant: true,
-    },
-    {
-      id: 8,
-      title: 'Pick up Nats from her school and drop at dance class😁 ',
-      dueDate: '2020-12-08',
-      description:
-        '<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>',
-      assignee: {
-        fullName: 'Thomas Moses',
-        avatar: require('@/assets/images/avatars/7.png'),
-      },
-      tags: ['low', 'medium'],
-      isCompleted: false,
-      isDeleted: false,
-      isImportant: false,
-    },
- 
-  ],
-}
-          tasks.value = datae
-    }
+      console.log("rrrrrrrrrrrr");
+      const datae = {
+        tasks: [
+          {
+            id: 1,
+            title:
+              "Entire change break our wife wide it daughter mention member.",
+            dueDate: "2020-11-25",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Jacob Ramirez",
+              avatar: require("@/assets/images/avatars/12.png")
+            },
+            tags: ["update"],
+            isCompleted: false,
+            isDeleted: false,
+            isImportant: false
+          },
+          {
+            id: 2,
+            title: "Citizen stand administration step agency century.",
+            dueDate: "2020-12-14",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Andrew Anderson",
+              avatar: ""
+            },
+            tags: ["team", "medium"],
+            isCompleted: true,
+            isDeleted: false,
+            isImportant: false
+          },
+          {
+            id: 3,
+            title: "Meet Jane and ask for coffee ❤️",
+            dueDate: "2020-11-25",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Benjamin Jacobs",
+              avatar: ""
+            },
+            tags: ["high"],
+            isCompleted: false,
+            isDeleted: false,
+            isImportant: false
+          },
+          {
+            id: 4,
+            title: "Answer the support tickets and close completed tickets. ",
+            dueDate: "2020-11-20",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Curtis Schmidt",
+              avatar: require("@/assets/images/avatars/9.png")
+            },
+            tags: ["medium"],
+            isCompleted: false,
+            isDeleted: false,
+            isImportant: true
+          },
+          {
+            id: 5,
+            title:
+              "Test functionality of apps developed by dev team for enhancements. ",
+            dueDate: "2020-12-06",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Katherine Perkins",
+              avatar: require("@/assets/images/avatars/9.png")
+            },
+            tags: ["medium"],
+            isCompleted: true,
+            isDeleted: false,
+            isImportant: true
+          },
+          {
+            id: 6,
+            title: "Conduct a mini awareness meeting regarding health care. ",
+            dueDate: "2020-12-06",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "David Murphy",
+              avatar: ""
+            },
+            tags: ["high", "medium"],
+            isCompleted: true,
+            isDeleted: true,
+            isImportant: false
+          },
+          {
+            id: 7,
+            title:
+              "Plan new dashboard design with design team for Google app store. ",
+            dueDate: "2020-12-05",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Karina Miller",
+              avatar: require("@/assets/images/avatars/1.png")
+            },
+            tags: ["medium"],
+            isCompleted: false,
+            isDeleted: false,
+            isImportant: true
+          },
+          {
+            id: 8,
+            title: "Pick up Nats from her school and drop at dance class😁 ",
+            dueDate: "2020-12-08",
+            description:
+              "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
+            assignee: {
+              fullName: "Thomas Moses",
+              avatar: require("@/assets/images/avatars/7.png")
+            },
+            tags: ["low", "medium"],
+            isCompleted: false,
+            isDeleted: false,
+            isImportant: false
+          }
+        ]
+      };
+      tasks.value = datae.tasks;
+    };
 
-    fetchTasks()
+    fetchTasks();
 
     const handleTaskClick = taskData => {
-      task.value = taskData
-      isTaskHandlerSidebarActive.value = true
-    }
+      task.value = taskData;
+      isTaskHandlerSidebarActive.value = true;
+    };
 
     // Single Task isCompleted update
     const updateTaskIsCompleted = taskData => {
       // eslint-disable-next-line no-param-reassign
-      taskData.isCompleted = !taskData.isCompleted
-      updateTask(taskData)
-    }
+      taskData.isCompleted = !taskData.isCompleted;
+      updateTask(taskData);
+    };
 
-    const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility()
+    const { mqShallShowLeftSidebar } = useResponsiveAppLeftSidebarVisibility();
 
     return {
       task,
@@ -554,10 +538,10 @@ export default {
       updateTaskIsCompleted,
 
       // Left Sidebar Responsive
-      mqShallShowLeftSidebar,
-    }
-  },
-}
+      mqShallShowLeftSidebar
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
