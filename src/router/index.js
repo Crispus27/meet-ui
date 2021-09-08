@@ -15,13 +15,16 @@ const router = new VueRouter({
       name: 'events',
       component: () => import('@/views/event/eventHome.vue'),
       meta: {
+        contentRenderer: 'sidebar-left',
+        contentClass: 'todo-application',
+        navActiveLink: 'apps-todo',
         pageTitle: 'evenement',
-        breadcrumb: [
-          {
-            text: 'evenement',
-            active: true,
-          },
-        ],
+        // breadcrumb: [
+        //   {
+        //     text: 'evenement',
+        //     active: true,
+        //   },
+        // ],
       },
     },
     {
