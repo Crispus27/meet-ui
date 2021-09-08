@@ -27,7 +27,7 @@
             </b-input-group-prepend>
             <b-form-input
               :value="searchQuery"
-              placeholder="Search task"
+              placeholder="Taper un mot clé"
               @input="updateRouteQuery"
             />
           </b-input-group>
@@ -456,52 +456,6 @@ export default defineComponent({
           isDeleted: false,
           isImportant: true
         },
-        {
-          id: 6,
-          title: "Conduct a mini awareness meeting regarding health care. ",
-          dueDate: "2020-12-06",
-          description:
-            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-          assignee: {
-            fullName: "David Murphy",
-            avatar: ""
-          },
-          tags: ["high", "medium"],
-          isCompleted: true,
-          isDeleted: true,
-          isImportant: false
-        },
-        {
-          id: 7,
-          title:
-            "Plan new dashboard design with design team for Google app store. ",
-          dueDate: "2020-12-05",
-          description:
-            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-          assignee: {
-            fullName: "Karina Miller",
-            avatar: require("@/assets/images/avatars/1.png")
-          },
-          tags: ["medium"],
-          isCompleted: false,
-          isDeleted: false,
-          isImportant: true
-        },
-        {
-          id: 8,
-          title: "Pick up Nats from her school and drop at dance class😁 ",
-          dueDate: "2020-12-08",
-          description:
-            "<p>Chocolate cake topping bonbon jujubes donut sweet wafer. Marzipan gingerbread powder brownie bear claw. Chocolate bonbon sesame snaps jelly caramels oat cake.</p>",
-          assignee: {
-            fullName: "Thomas Moses",
-            avatar: require("@/assets/images/avatars/7.png")
-          },
-          tags: ["low", "medium"],
-          isCompleted: false,
-          isDeleted: false,
-          isImportant: false
-        }
       ];
     };
 
